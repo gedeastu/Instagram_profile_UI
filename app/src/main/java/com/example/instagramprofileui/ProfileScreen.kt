@@ -1,5 +1,6 @@
 package com.example.instagramprofileui
 
+import androidx.compose.foundation.ExperimentalFoundationApi
 import androidx.compose.foundation.Image
 import androidx.compose.foundation.border
 import androidx.compose.foundation.layout.Arrangement
@@ -15,20 +16,30 @@ import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.size
 import androidx.compose.foundation.layout.width
 import androidx.compose.foundation.lazy.LazyRow
+import androidx.compose.foundation.lazy.grid.GridCells
+import androidx.compose.foundation.lazy.grid.LazyVerticalGrid
 import androidx.compose.foundation.shape.CircleShape
 import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.filled.ArrowBack
 import androidx.compose.material.icons.filled.KeyboardArrowDown
 import androidx.compose.material3.Icon
+import androidx.compose.material3.Tab
+import androidx.compose.material3.TabRow
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
+import androidx.compose.runtime.getValue
+import androidx.compose.runtime.mutableIntStateOf
+import androidx.compose.runtime.remember
+import androidx.compose.runtime.setValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.clip
+import androidx.compose.ui.draw.scale
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.graphics.painter.Painter
 import androidx.compose.ui.graphics.vector.ImageVector
+import androidx.compose.ui.layout.ContentScale
 import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.text.SpanStyle
 import androidx.compose.ui.text.TextStyle
@@ -40,6 +51,7 @@ import androidx.compose.ui.unit.Dp
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 
+@ExperimentalFoundationApi
 @Composable
 fun ProfileScreen(modifier: Modifier = Modifier){
     Column(modifier = Modifier.fillMaxSize()) {
@@ -60,8 +72,12 @@ fun TopBar(name:String,modifier: Modifier=Modifier){
     }
 }
 
+@OptIn(ExperimentalFoundationApi::class)
 @Composable
 fun ProfileSection(modifier: Modifier=Modifier){
+    var selectedIndex by remember {
+        mutableIntStateOf(0)
+    }
     Column(modifier = Modifier.fillMaxWidth()){
         Row(verticalAlignment = Alignment.CenterVertically,modifier = Modifier
             .fillMaxWidth()
@@ -104,6 +120,52 @@ fun ProfileSection(modifier: Modifier=Modifier){
                 .fillMaxWidth()
                 .padding(top = 15.dp, start = 20.dp, end = 20.dp)
         )
+        PostTabView(
+            icons = listOf(
+                StoryHighlights(
+                    image = painterResource(id = R.drawable.ic_grid),
+                    text = "Posts"
+                ),
+                StoryHighlights(
+                    image = painterResource(id = R.drawable.ic_reels),
+                    text = "Reels"
+                ),
+                StoryHighlights(
+                    image = painterResource(id = R.drawable.ic_igtv),
+                    text = "IGTV"
+                ),
+                StoryHighlights(
+                    image = painterResource(id = R.drawable.profile),
+                    text = "Profile"
+                ),
+            )
+        ) {
+            selectedIndex = it
+        }
+        when(selectedIndex) {
+            0 -> PostSection(
+                posts = listOf(
+                    painterResource(id = R.drawable.kmm),
+                    painterResource(id = R.drawable.intermediate_dev),
+                    painterResource(id = R.drawable.master_logical_thinking),
+                    painterResource(id = R.drawable.bad_habits),
+                    painterResource(id = R.drawable.multiple_languages),
+                    painterResource(id = R.drawable.learn_coding_fast),
+                ),
+                modifier = Modifier.fillMaxWidth()
+            )
+//            1 -> PostSection(
+//                posts = listOf(
+//                    painterResource(id = R.drawable.kmm),
+//                    painterResource(id = R.drawable.intermediate_dev),
+//                    painterResource(id = R.drawable.master_logical_thinking),
+//                    painterResource(id = R.drawable.bad_habits),
+//                    painterResource(id = R.drawable.multiple_languages),
+//                    painterResource(id = R.drawable.learn_coding_fast),
+//                ),
+//                modifier = Modifier.fillMaxWidth()
+//            )
+        }
     }
 }
 
@@ -280,6 +342,62 @@ fun HighlightsSection(modifier: Modifier=Modifier,highlights: List<StoryHighligh
                     textAlign = TextAlign.Center
                 )
             }
+        }
+    }
+}
+
+@Composable
+fun PostTabView(modifier: Modifier = Modifier,icons : List<StoryHighlights>,onTabSelected:(selectedIndex : Int)->Unit){
+    var selectedIndex by remember {
+        mutableIntStateOf(0)
+    }
+    val inactive = Color(0xFF777777)
+    TabRow(
+        selectedTabIndex = selectedIndex,
+        contentColor = Color.Black,
+        modifier = Modifier.padding(top = 20.dp)
+    ) {
+        icons.forEachIndexed{index,item ->
+            Tab(
+                selected = selectedIndex == index,
+                selectedContentColor = Color.Black,
+                unselectedContentColor = inactive,
+                onClick = {
+                    selectedIndex = index
+                    onTabSelected(index)
+            }) {
+                Icon(painter = item.image, contentDescription = item.text, tint = if(selectedIndex == index) Color.Black else inactive,
+                    modifier = Modifier
+                        .padding(10.dp)
+                        .size(20.dp))
+            }
+        }
+    }
+}
+
+@ExperimentalFoundationApi
+@Composable
+fun PostSection(
+    posts: List<Painter>,
+    modifier: Modifier = Modifier
+) {
+    LazyVerticalGrid(
+        columns = GridCells.Fixed(3),
+        modifier = modifier
+            .scale(1.01f)
+    ) {
+        items(posts.size) {
+            Image(
+                painter = posts[it],
+                contentDescription = null,
+                contentScale = ContentScale.Crop,
+                modifier = Modifier
+                    .aspectRatio(1f)
+                    .border(
+                        width = 1.dp,
+                        color = Color.White
+                    )
+            )
         }
     }
 }
