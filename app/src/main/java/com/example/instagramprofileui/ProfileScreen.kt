@@ -14,6 +14,7 @@ import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.size
 import androidx.compose.foundation.layout.width
+import androidx.compose.foundation.lazy.LazyRow
 import androidx.compose.foundation.shape.CircleShape
 import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.material.icons.Icons
@@ -80,6 +81,29 @@ fun ProfileSection(modifier: Modifier=Modifier){
             otherCount = 18
         )
         ButtonSection(modifier = Modifier.fillMaxWidth())
+        HighlightsSection(
+            highlights = listOf(
+                StoryHighlights(
+                    image = painterResource(id = R.drawable.youtube),
+                    text = "YouTube"
+                ),
+                StoryHighlights(
+                    image = painterResource(id = R.drawable.qa),
+                    text = "Q&A"
+                ),
+                StoryHighlights(
+                    image = painterResource(id = R.drawable.discord),
+                    text = "Discord"
+                ),
+                StoryHighlights(
+                    image = painterResource(id = R.drawable.telegram),
+                    text = "Telegram"
+                ),
+            ),
+            modifier = Modifier
+                .fillMaxWidth()
+                .padding(top = 15.dp, start = 20.dp, end = 20.dp)
+        )
     }
 }
 
@@ -169,11 +193,9 @@ fun ProfileDescription(displayName : String, description: String, url:String, fo
 }
 
 @Composable
-fun ButtonSection(
-    modifier: Modifier = Modifier
-) {
+fun ButtonSection(modifier: Modifier = Modifier) {
     val minWidth = 95.dp
-    val height = 30.dp
+    val height = 35.dp
     Row(
         horizontalArrangement = Arrangement.SpaceEvenly,
         modifier = modifier.padding(top = 10.dp)
@@ -206,11 +228,7 @@ fun ButtonSection(
 }
 
 @Composable
-fun ActionButton(
-    modifier: Modifier = Modifier,
-    text: String? = null,
-    icon: ImageVector? = null
-) {
+fun ActionButton(modifier: Modifier = Modifier, text: String? = null, icon: ImageVector? = null) {
     Row(
         horizontalArrangement = Arrangement.Center,
         verticalAlignment = Alignment.CenterVertically,
@@ -235,6 +253,33 @@ fun ActionButton(
                 contentDescription = null,
                 tint = Color.Black
             )
+        }
+    }
+}
+
+@Composable
+fun HighlightsSection(modifier: Modifier=Modifier,highlights: List<StoryHighlights>){
+    LazyRow(modifier = modifier) {
+        items(highlights.size) {
+            Column(
+                horizontalAlignment = Alignment.CenterHorizontally,
+                verticalArrangement = Arrangement.Center,
+                modifier = Modifier
+                    .padding(end = 15.dp)
+            ) {
+                RoundedImage(
+                    image = highlights[it].image,
+                    modifier = Modifier.size(70.dp),
+                    contentDescription = "Highlight Stories $it",
+                    height = 85.dp,
+                    width = 85.dp
+                )
+                Text(
+                    text = highlights[it].text,
+                    overflow = TextOverflow.Ellipsis,
+                    textAlign = TextAlign.Center
+                )
+            }
         }
     }
 }
