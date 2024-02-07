@@ -19,6 +19,7 @@ import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.text.TextStyle
 import androidx.compose.ui.text.font.FontWeight
+import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.text.style.TextOverflow
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
@@ -34,7 +35,7 @@ fun ProfileScreen(modifier: Modifier = Modifier){
 fun TopBar(name:String,modifier: Modifier=Modifier){
     Row(verticalAlignment = Alignment.CenterVertically, horizontalArrangement = Arrangement.SpaceBetween, modifier = modifier.fillMaxWidth().padding(start = 20.dp, end = 20.dp, top = 24.dp)) {
         Icon(imageVector = Icons.Default.ArrowBack, contentDescription = "back", tint = Color.Black, modifier = Modifier.size(25.dp))
-        Text(modifier = Modifier.width(200.dp),text = name, style = TextStyle(fontWeight = FontWeight.Bold, fontSize = 20.sp), overflow = TextOverflow.Ellipsis)
+        Text(modifier = Modifier.width(200.dp),text = name, style = TextStyle(fontWeight = FontWeight.Bold, fontSize = 20.sp), textAlign = TextAlign.Center ,overflow = TextOverflow.Ellipsis)
         Icon(painter = painterResource(id = R.drawable.ic_bell), contentDescription = "Notifications", modifier = Modifier.size(25.dp))
         Icon(painter = painterResource(id = R.drawable.ic_dotmenu), contentDescription = "Menu",modifier = Modifier.size(24.dp))
     }
