@@ -75,7 +75,7 @@ fun TopBar(name:String,modifier: Modifier=Modifier){
 @OptIn(ExperimentalFoundationApi::class)
 @Composable
 fun ProfileSection(modifier: Modifier=Modifier){
-    var selectedIndex by remember {
+    var selectedTabIndex by remember {
         mutableIntStateOf(0)
     }
     Column(modifier = Modifier.fillMaxWidth()){
@@ -138,11 +138,10 @@ fun ProfileSection(modifier: Modifier=Modifier){
                     image = painterResource(id = R.drawable.profile),
                     text = "Profile"
                 ),
-            )
-        ) {
-            selectedIndex = it
-        }
-        when(selectedIndex) {
+            ),
+            onTabSelected = {selectedTabIndex = it}
+        )
+        when(selectedTabIndex) {
             0 -> PostSection(
                 posts = listOf(
                     painterResource(id = R.drawable.kmm),
@@ -347,26 +346,26 @@ fun HighlightsSection(modifier: Modifier=Modifier,highlights: List<StoryHighligh
 }
 
 @Composable
-fun PostTabView(modifier: Modifier = Modifier,icons : List<StoryHighlights>,onTabSelected:(selectedIndex : Int)->Unit){
-    var selectedIndex by remember {
+fun PostTabView(modifier: Modifier = Modifier,icons : List<StoryHighlights>,onTabSelected:(selectedTabIndex : Int)->Unit){
+    var selectedTabIndex by remember {
         mutableIntStateOf(0)
     }
     val inactive = Color(0xFF777777)
     TabRow(
-        selectedTabIndex = selectedIndex,
+        selectedTabIndex = selectedTabIndex,
         contentColor = Color.Black,
         modifier = Modifier.padding(top = 20.dp)
     ) {
         icons.forEachIndexed{index,item ->
             Tab(
-                selected = selectedIndex == index,
+                selected = selectedTabIndex == index,
                 selectedContentColor = Color.Black,
                 unselectedContentColor = inactive,
                 onClick = {
-                    selectedIndex = index
+                    selectedTabIndex = index
                     onTabSelected(index)
             }) {
-                Icon(painter = item.image, contentDescription = item.text, tint = if(selectedIndex == index) Color.Black else inactive,
+                Icon(painter = item.image, contentDescription = item.text, tint = if(selectedTabIndex == index) Color.Black else inactive,
                     modifier = Modifier
                         .padding(10.dp)
                         .size(20.dp))
