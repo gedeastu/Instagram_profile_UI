@@ -51,7 +51,6 @@ import androidx.compose.ui.unit.Dp
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 
-@ExperimentalFoundationApi
 @Composable
 fun ProfileScreen(modifier: Modifier = Modifier){
     Column(modifier = Modifier.fillMaxSize()) {
@@ -376,10 +375,7 @@ fun PostTabView(modifier: Modifier = Modifier,icons : List<StoryHighlights>,onTa
 
 @ExperimentalFoundationApi
 @Composable
-fun PostSection(
-    posts: List<Painter>,
-    modifier: Modifier = Modifier
-) {
+fun PostSection(posts: List<Painter>, modifier: Modifier = Modifier) {
     LazyVerticalGrid(
         columns = GridCells.Fixed(3),
         modifier = modifier
